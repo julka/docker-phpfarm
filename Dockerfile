@@ -30,10 +30,11 @@ RUN apt-get update && \
     libmcrypt-dev \
     libt1-dev \
     libltdl-dev \
-    libmhash-dev
+    libmhash-dev \
+    mysql-server
 
 # install and run the phpfarm script
-RUN git clone https://github.com/cweiske/phpfarm.git phpfarm
+RUN git clone https://github.com/julka/phpfarm.git phpfarm && cd phpfarm && git checkout origin/mysql -b mysql
 
 # add customized configuration
 COPY phpfarm /phpfarm/src/
