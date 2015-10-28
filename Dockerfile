@@ -31,7 +31,8 @@ RUN apt-get update && \
     libt1-dev \
     libltdl-dev \
     libmhash-dev \
-    mysql-server
+    mysql-server \
+    vim
 
 # install and run the phpfarm script
 RUN git clone https://github.com/julka/phpfarm.git phpfarm && cd phpfarm && git checkout origin/mysql -b mysql
