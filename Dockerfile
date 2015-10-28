@@ -60,8 +60,8 @@ RUN rm -rf /var/www/*
 COPY var-www /var/www/
 COPY apache  /etc/apache2/
 
-RUN mysql.sh
-RUN wordpress.sh
+#RUN /phpfarm/src/mysql.sh
+#RUN /phpfarm/src/wordpress.sh
 
 RUN a2ensite php-5.2 php-5.3 php-5.4 php-5.5 php-5.6
 RUN a2enmod rewrite

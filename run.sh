@@ -9,4 +9,5 @@ fi
 
 
 apache2ctl start
+service mysql start
 tail -f /var/log/apache2/error.log
