@@ -18,6 +18,7 @@ configoptions="$configoptions \
     --with-mhash \
     --with-mcrypt \
     --with-libdir=$LIBPATH \
+    --with-mysql \
 "
 
 echo $configoptions
