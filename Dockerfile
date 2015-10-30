@@ -31,6 +31,7 @@ RUN apt-get update && \
     libt1-dev \
     libltdl-dev \
     libmhash-dev \
+    libmysqlclient-dev \
     mysql-server \
     vim
 
