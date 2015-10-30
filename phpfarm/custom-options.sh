@@ -5,8 +5,8 @@ else
     LIBPATH="/lib/x86_64-linux-gnu/"
 fi
 
-
 configoptions="$configoptions \
+    --with-mysql \
     --enable-fastcgi \
     --with-bz2 \
     --with-curl \
@@ -18,7 +18,6 @@ configoptions="$configoptions \
     --with-mhash \
     --with-mcrypt \
     --with-libdir=$LIBPATH \
-    --with-mysql \
 "
 
 echo $configoptions

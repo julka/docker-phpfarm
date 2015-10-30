@@ -7,7 +7,6 @@ if [ ! -z "$APACHE_UID" ]; then
     chown -R wwwrun /var/lib/apache2
 fi
 
-
-apache2ctl start
 service mysql start
+apache2ctl start
 tail -f /var/log/apache2/error.log
