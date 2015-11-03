@@ -50,17 +50,21 @@ do
 
     cp wp-config-sample.php wp-config.php
 
-    echo "define('AUTOMATIC_UPDATER_DISABLED', true);" >> wp-config.php
-    echo "define('FS_METHOD','direct');" >> wp-config.php
-    echo "error_reporting(E_ALL | E_STRICT);" >> wp-config.php
-    echo "define('DB_NAME', '$dbName');" >> wp-config.php
-    echo "define('DB_USER', 'wordpress');" >> wp-config.php
-    echo "define('DB_PASSWORD', '$wpDbPassword');" >> wp-config.php
+    touch wp-config-generated.php
+    echo "<?php" >> wp-config-generated.php
+    echo "define('AUTOMATIC_UPDATER_DISABLED', true);" >> wp-config-generated.php
+    echo "define('FS_METHOD','direct');" >> wp-config-generated.php
+    echo "error_reporting(E_ALL | E_STRICT);" >> wp-config-generated.php
+    echo "define('DB_NAME', '$dbName');" >> wp-config-generated.php
+    echo "define('DB_USER', 'wordpress');" >> wp-config-generated.php
+    echo "define('DB_PASSWORD', '$wpDbPassword');" >> wp-config-generated.php
 
     # set to false for versions 3.0, 3.0.1, 3.0.6, 3.1.4, 3.2.1 because there's lots of depreicated PHP calls
     if [ "$version" == "3.0" ] || [ "$version" == "3.0.1" ] || [ "$version" == "3.0.6" ] || [ "$version" == "3.1.4" ] || [ "$version" == "3.2.1" ]; then
-        echo "ini_set(\"display_errors\", false);" >> wp-config.php
+        echo "ini_set(\"display_errors\", false);" >> wp-config-generated.php
     else
-        echo "ini_set(\"display_errors\", true);" >> wp-config.php
+        echo "ini_set(\"display_errors\", true);" >> wp-config-generated.php
     fi
+
+    echo "include(ABSPATH . 'wp-config-generated.php');" >> wp-config.php
 done
