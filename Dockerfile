@@ -36,7 +36,7 @@ RUN apt-get update && \
     vim
 
 # install and run the phpfarm script
-RUN git clone -b mysql https://github.com/julka/phpfarm.git phpfarm
+RUN git clone https://github.com/cweiske/phpfarm.git phpfarm
 #COPY phpfarm.git phpfarm
 
 # add customized configuration
