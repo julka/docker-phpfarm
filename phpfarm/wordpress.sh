@@ -2,10 +2,9 @@
 
 service mysql start
 
-rm -Rf /tmp/docker-phpfarm/phpfarm/www/WordPress
-mkdir -p /tmp/docker-phpfarm/phpfarm/www/WordPress
-cd /tmp/docker-phpfarm/phpfarm/www/WordPress
-git clone https://github.com/WordPress/WordPress.git master
+rm -Rf /root/WordPress
+mkdir -p /root/WordPress
+git clone https://github.com/WordPress/WordPress.git /root/WordPress/master
 #git clone http://git.clearspring.local/addthis-wordpress-plugin.git master/wp-content/plugins/addthis
 
 versions=(
@@ -37,11 +36,11 @@ do
     mysql -u wordpress -paddthisrocks -e "CREATE DATABASE ${dbName};"
 
     if [ "$version" != "master" ]; then
-        cp -Rf master $version
+        cp -Rf /root/WordPress/master /root/WordPress/$version
     fi
 
-    cd $version
-    pwd
+    cd /root/WordPress/$version
+    git config core.fileMode false
 
     if [ "$version" != "master" ]; then
         git checkout $version -b release/$version
@@ -61,9 +60,4 @@ do
     else
         echo "ini_set(\"display_errors\", true);" >> wp-config.php
     fi
-
-    cd ../
 done
-
-pwd
-ls -l
