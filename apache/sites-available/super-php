@@ -1,0 +1,42 @@
+<VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+
+    DocumentRoot /var/www
+    <Directory />
+        Options FollowSymLinks +Indexes
+        AllowOverride None
+    </Directory>
+
+    <Directory /var/www/>
+        Options FollowSymLinks +ExecCGI +Indexes
+        AllowOverride All
+        Order allow,deny
+        allow from all
+    </Directory>
+
+    <Directory /var/www/php-5.2.17/>
+        FCGIWrapper /phpfarm/inst/php-5.2.17/bin/php-cgi .php
+    </Directory>
+
+    <Directory /var/www/php-5.3.29/>
+        FCGIWrapper /phpfarm/inst/php-5.3.29/bin/php-cgi .php
+    </Directory>
+
+    <Directory /var/www/php-5.4.44/>
+        FCGIWrapper /phpfarm/inst/php-5.4.44/bin/php-cgi .php
+    </Directory>
+
+    <Directory /var/www/php-5.5.28/>
+        FCGIWrapper /phpfarm/inst/php-5.5.28/bin/php-cgi .php
+    </Directory>
+
+    <Directory /var/www/php-5.6.12/>
+        FCGIWrapper /phpfarm/inst/php-5.6.12/bin/php-cgi .php
+    </Directory>
+
+    AddHandler fcgid-script .php
+
+    LogLevel warn
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>

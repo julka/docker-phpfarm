@@ -59,20 +59,22 @@ RUN cd /phpfarm/src && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+RUN /root/phpfarm/src/mysql.sh
+RUN /root/phpfarm/src/wordpress.sh
+
 # reconfigure Apache
 RUN rm -rf /var/www/*
-
-COPY var-www /var/www/
 COPY apache  /etc/apache2/
 
-RUN a2ensite php-5.2 php-5.3 php-5.4 php-5.5 php-5.6
+RUN a2dissite 000-default
+RUN a2ensite super-php
 RUN a2enmod rewrite
 
 # set path
 ENV PATH /phpfarm/inst/bin/:/usr/sbin:/usr/bin:/sbin:/bin
 
 # expose the ports
-EXPOSE 8052 8053 8054 8055 8056
+EXPOSE 80
 
 # run it
 COPY run.sh /run.sh
