@@ -34,8 +34,8 @@ do
     :
     dbName=wp_${version//./}
 
-    mysql -u wordpress -p{$wpDbPassword} -e "DROP DATABASE IF EXISTS ${dbName};"
-    mysql -u wordpress -p{$wpDbPassword} -e "CREATE DATABASE ${dbName};"
+    mysql -u wordpress -p$wpDbPassword -e "DROP DATABASE IF EXISTS $dbName;"
+    mysql -u wordpress -p$wpDbPassword -e "CREATE DATABASE $dbName;"
 
     if [ "$version" != "master" ]; then
         cp -Rf /root/WordPress/master /root/WordPress/$version

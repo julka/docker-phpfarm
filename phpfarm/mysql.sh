@@ -13,10 +13,12 @@ touch /mysql.passwords.txt
 echo "$rootDbPassword" > /root/mysql.password.root.txt
 echo "$wpDbPassword" > /root/mysql.password.wordpress.txt
 
-mysql -u root -e "
-    SET PASSWORD FOR 'root'@'localhost' = PASSWORD('{$rootDbPassword}');
-    SET PASSWORD FOR 'root'@'127.0.0.1' = PASSWORD('{$rootDbPassword}');
+mysql="
+    SET PASSWORD FOR 'root'@'localhost' = PASSWORD('"$rootDbPassword"');
+    SET PASSWORD FOR 'root'@'127.0.0.1' = PASSWORD('"$rootDbPassword"');
     CREATE USER 'wordpress'@'localhost';
-    SET PASSWORD FOR 'wordpress'@'localhost' = PASSWORD('{$wpDbPassword}');
+    SET PASSWORD FOR 'wordpress'@'localhost' = PASSWORD('"$wpDbPassword"');
     GRANT ALL PRIVILEGES ON * . * TO 'wordpress'@'localhost';
-"
+";
+
+mysql -u root -e "$mysql"
