@@ -66,5 +66,10 @@ do
         echo "ini_set(\"display_errors\", true);" >> wp-config-generated.php
     fi
 
-    echo "include(ABSPATH . 'wp-config-generated.php');" >> wp-config.php
+    perl -pi -e 's/\/\/ \*\* MySQL settings/include\(ABSPATH . "wp-config-generated.php");\n\/\/ ** MySQL settings/' wp-config.php
+    perl -pi -e 's/^(\s*define\(\s*.AUTOMATIC_UPDATER_DISABLED)/#$1/g' wp-config.php
+    perl -pi -e 's/^(\s*define\(\s*.FS_METHOD)/#$1/g' wp-config.php
+    perl -pi -e 's/^(\s*define\(\s*.DB_NAME)/#$1/g' wp-config.php
+    perl -pi -e 's/^(\s*define\(\s*.DB_USER)/#$1/g' wp-config.php
+    perl -pi -e 's/^(\s*define\(\s*.DB_PASSWORD)/#$1/g' wp-config.php
 done
