@@ -39,39 +39,30 @@ RUN apt-get update && \
 #COPY * docker-phpfarm
 # install and run the phpfarm script
 RUN git clone https://github.com/cweiske/phpfarm.git phpfarm
-#COPY phpfarm.git phpfarm
+RUN git clone https://github.com/cweiske/phpfarm.git /root/phpfarm
 
 # add customized configuration
 COPY phpfarm /phpfarm/src/
-#COPY phpfarm /phpfarm/src/
-#RUN /root/docker-phparm/phpfarm/src/mysql.sh
-#RUN /root/docker-phparm/phpfarm/src/wordpress.sh
+COPY phpfarm /root/phpfarm/src/
+COPY wordpress_plugins /root/wordpress_plugins
 
 # compile, then delete sources (saves space)
-#RUN cd /root/phpfarm/src && \
-RUN cd /phpfarm/src && \
-    ./compile.sh 5.2.17 && \
-    ./compile.sh 5.3.29 && \
-    ./compile.sh 5.4.44 && \
-    ./compile.sh 5.5.28 && \
-    ./compile.sh 5.6.12 && \
-#    rm -rf /phpfarm/src && \
+RUN /root/phpfarm/src/php.sh && \
+    /root/phpfarm/src/mysql.sh && \
+    /root/phpfarm/src/wordpress.sh && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-
-RUN /root/phpfarm/src/mysql.sh
-RUN /root/phpfarm/src/wordpress.sh
 
 # reconfigure Apache
 RUN rm -rf /var/www/*
 COPY apache  /etc/apache2/
 
-RUN a2dissite 000-default
-RUN a2ensite super-php
-RUN a2enmod rewrite
+RUN a2dissite 000-default && \
+    a2ensite super-php && \
+    a2enmod rewrite
 
 # set path
-ENV PATH /phpfarm/inst/bin/:/usr/sbin:/usr/bin:/sbin:/bin
+ENV PATH /root/phpfarm/inst/bin/:/usr/sbin:/usr/bin:/sbin:/bin
 
 # expose the ports
 EXPOSE 80
