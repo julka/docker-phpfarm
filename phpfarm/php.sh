@@ -1,7 +1,7 @@
 #!/bin/bash
 
-apacheConfigFile="/root/php_versions.conf"
-touch $apacheConfigFile
+file="/root/php_versions.conf"
+touch $file
 
 php_versions=(
     "5.2.17"
@@ -20,13 +20,14 @@ do
 
     mkdir -p /root/www/php-$php_version
     chmod ugo+x /root/www/php-$php_version
+
     echo "<?php phpinfo() ?>" > /root/www/php-$php_version/php_info.php
 
     /root/phpfarm/src/compile.sh $php_version
 
     # cat directory stuff into a file for apache
-    echo "<Directory /root/www/php-$php_version/>" >> $apacheConfigFile
-    echo "    FCGIWrapper /root/phpfarm/inst/php-$php_version/bin/php-cgi .php" >> $apacheConfigFile
-    echo "</Directory>" >> $apacheConfigFile
-    echo "" >> $apacheConfigFile
+    echo "<Directory /root/www/php-$php_version/>" >> $file
+    echo "    FCGIWrapper /root/phpfarm/inst/php-$php_version/bin/php-cgi .php" >> $file
+    echo "</Directory>" >> $file
+    echo "" >> $file
 done

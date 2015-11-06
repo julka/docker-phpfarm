@@ -36,28 +36,21 @@ RUN apt-get update && \
     mysql-server \
     vim
 
-#COPY * docker-phpfarm
-# install and run the phpfarm script
-RUN git clone https://github.com/cweiske/phpfarm.git phpfarm
+# clone phpfarm
 RUN git clone https://github.com/cweiske/phpfarm.git /root/phpfarm
 
 # add customized configuration
-COPY phpfarm /phpfarm/src/
 COPY phpfarm /root/phpfarm/src/
 COPY wordpress_plugins /root/wordpress_plugins
+COPY apache  /etc/apache2/
 
-# compile, then delete sources (saves space)
+# compile, set up mysql & wp, clean up, enable/disable apache stuff
 RUN /root/phpfarm/src/php.sh && \
     /root/phpfarm/src/mysql.sh && \
     /root/phpfarm/src/wordpress.sh && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-
-# reconfigure Apache
-RUN rm -rf /var/www/*
-COPY apache  /etc/apache2/
-
-RUN a2dissite 000-default && \
+    rm -rf /var/lib/apt/lists/* && \
+    a2dissite 000-default && \
     a2ensite super-php && \
     a2enmod rewrite
 
