@@ -4,11 +4,12 @@ file="/root/php_versions.conf"
 touch $file
 
 php_versions=(
+    "5.2.4"
     "5.2.17"
     "5.3.29"
     "5.4.44"
-    "5.5.28"
-    "5.6.12"
+    "5.5.29"
+    "5.6.14"
 )
 
 chmod ugo+x /root
