@@ -7,6 +7,7 @@ fi
 
 configoptions="$configoptions \
     --with-mysql \
+    --with-mysql-sock=/var/run/mysqld/mysqld.sock \
     --enable-fastcgi \
     --with-bz2 \
     --with-curl \

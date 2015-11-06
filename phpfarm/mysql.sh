@@ -2,10 +2,6 @@
 
 service mysql start
 
-ln -s /var/run/mysqld/mysqld.sock  /tmp/mysql.sock
-mkdir /var/mysql/
-ln -s /var/run/mysqld/mysqld.sock  /var/mysql/mysql.sock
-
 rootDbPassword=`openssl rand -base64 5`
 wpDbPassword=`openssl rand -base64 5`
 
