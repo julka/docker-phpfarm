@@ -1,49 +1,31 @@
-phpfarm for docker
+Read Me
 ==================
-
-This is a build file to create a [phpfarm](http://sourceforge.net/projects/phpfarm/)
-setup. The resulting docker image will run Apache on 5 different ports with 5
-different PHP versions:
-
-Port | PHP Version
------|-------------
-8052 | 5.2.17
-8053 | 5.3.29
-8054 | 5.4.44
-8055 | 5.5.28
-8056 | 5.6.12
 
 Building the image
 ------------------
+    docker build .
 
-After checkout, simply run the following command:
+Changing PHP Versions
+------------------
+Before building, you can change the versions of PHP that are compiled by adding or removing from a variable in the phpfarm/php.sh file. There is a variable in that file named php_versions. You can add or reomve versions into that array. The more PHP versions there are in that list, the longer it will take to build the image.
 
-    docker build -t splitbrain/phpfarm .
+That array is duplicated in phpfarm/wordpress.sh. If you want to run WordPress on more than one version of PHP, be sure to update the list in that file as well, before building.
 
-This will setup a base Debian system, install phpfarm, download and compile the four
-PHP versions and setup Apache. So, yes this will take a while. See the next section
-for a faster alternative.
+Changing WordPress Versions
+------------------
+If you only want to run one version of WordPress on the image, you can specify that when running the container. See the section about specifying versions when running the container.
 
-Downloading the image
------------------
-
-Simply downloading the ready made image from index.docker.io is probably the fastest
-way. Just run this:
-
-    docker pull splitbrain/phpfarm
-
-Please note that this image might be somewhat behind from what the Dockerfile would
-build, but my upload speed is too limited to upload a gigabyte in a timely fashion.
+If you want to run multiple ones at a time, there is a variable in phpfarm/wordpress.sh specifying WordPress versions. That variable is named wp_versions. You can add and remove items from that list. Here, you can use any name avaiable in the WordPress git repository as a branch or a tag (including master).
 
 Running the container
 ---------------------
 
-The following will run the container and map all ports to their respective ports on the
-local machine. The current working directory will be used as the document root for
-the Apache server and the server it self will run with the same user id as your current
-user.
+The following will run the container, set up WordPress for every included PHP version and map port 80 on the local machine.
 
-    docker run --rm -t -i -e APACHE_UID=$UID -v $PWD:/var/www:rw -p 8052:8052 -p 8053:8053 -p 8054:8054 -p 8055:8055 -p 8056:8056 splitbrain/phpfarm
+    docker run --rm -t -i \
+    -e APACHE_UID=$UID \
+    -p 80:80 \
+    hashFromBuildHere
 
 Above command will also remove the container again when the process is aborted with
 CTRL-C. While running the Apache and PHP error log is shown on STDOUT.
@@ -52,15 +34,68 @@ Note: the entry point for this image has been defined as ''/bin/bash'' and it wi
 run our ''run.sh'' by default. You can specify other parameters to be run by bash
 of course.
 
-To Do
------
+Specifying Versions When Running The Container.
+---------------------
 
-- [ ] adjust the build process to have a single file to configure PHP versions and ports
-- [ ] optimize the Dockerfile to be more space and update efficient
-- [ ] add more common PHP modules to be built
+If you only want to run WordPress on one version of PHP, or if you only want one version of WordPress, you can specify that when running the docker.
 
-Feedback
---------
+Note: For PHP versions, you are restrictied to only using the versions of PHP the image was initally build with. For WordPress versions, you can specify any name avaiable in the WordPress git repository as a branch or a tag (including master). The example below uses PHP version 5.2.4 and WordPress version 4.3.1.
 
-This is the first time I ever worked with docker. Pullrequests and hints on how
-to improve the process are more than welcome.
+    docker run --rm -t -i \
+    -e APACHE_UID=$UID \
+    -e php="5.2.4" \
+    -e wordpress="4.3.1" \
+    -p 80:80 \
+    hashFromBuildHere
+
+Loading in WordPress Plugins
+---------------------
+
+The plugins all get loaded in from the /root/wordpress_plugins/ folder. Each WordPress instance sym links to it. You have three ways to put things into this folder.
+
+1. Before building, you can make a folder called wordpress_plugins as a sibling with the Dockerfile and put your plugins (the unzipped plugin folders) there.
+
+2. mount a folder on our machine into the container when you run it. The below will mount your current working directory in /root/wordpress_plugins/
+
+    docker run --rm -t -i \
+    -e APACHE_UID=$UID \
+    -v $PWD:/root/wordpress_plugins:rw \
+    -p 80:80 \
+    hashFromBuildHere
+
+3. copy it in after the container is running
+
+Default PHP Versions
+==================
+
+PHP Version
+-------------
+5.2.4
+5.2.17
+5.3.29
+5.4.44
+5.5.29
+5.6.14
+
+Default WordPress Versions
+==================
+
+WordPress Version
+-------------
+master
+3.0
+3.0.1
+3.0.6
+3.1.4
+3.2.1
+3.3.3
+3.4.2
+3.5.2
+3.6.1
+3.7.11
+3.8.11
+3.9.9
+4.0.8
+4.1.8
+4.2.5
+4.3.1
