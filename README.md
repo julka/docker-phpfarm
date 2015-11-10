@@ -73,6 +73,18 @@ The plugins all get loaded in from the /root/wordpress_plugins/ folder. Each Wor
     hashFromBuildHere
 ```
 
+Running a Detatched Container
+==================
+alternately, switch out
+```
+-rm -t -i
+```
+for
+```
+-d
+```
+in any of the examples in this document to run the container detached
+
 Default PHP Versions
 ==================
 
