@@ -100,3 +100,20 @@ do
         perl -pi -e 's/^(\s*define\(\s*.DB_PASSWORD)/#$1/g' wp-config.php
     done
 done
+
+# set up consistent folder to make it earier to testers to find where to go
+if [ ! -z "$php" ]; then
+    if [ ! -z "$wordpress" ]; then
+        # sym link to the wordpress instance for this version of php
+        ln -s /root/www/php-$php/WordPress-$wordpress /root/www/test_here
+    else
+        # sym link to the php version
+        ln -s /root/www/php-$php /root/www/test_here
+    fi
+
+    file="/root/php_versions.conf"
+    echo "<Directory /root/www/test_here/>" >> $file
+    echo "    FCGIWrapper /root/phpfarm/inst/php-$php/bin/php-cgi .php" >> $file
+    echo "</Directory>" >> $file
+    echo "" >> $file
+fi
