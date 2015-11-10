@@ -71,7 +71,7 @@ do
         fi
 
         rm -Rf wp-content/plugins/
-        cp -Rf /root/wordpress_plugins wp-content/plugins/
+        ln -s /root/wordpress_plugins wp-content/plugins
 
         cp wp-config-sample.php wp-config.php
 
