@@ -8,5 +8,6 @@ if [ ! -z "$APACHE_UID" ]; then
 fi
 
 service mysql start
+/root/phpfarm/src/wordpress.sh
 apache2ctl start
 tail -f /var/log/apache2/error.log

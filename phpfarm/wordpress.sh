@@ -29,10 +29,23 @@ php_versions=(
     "5.6.14"
 )
 
-service mysql start
 wpDbPassword=`cat /root/mysql.password.wordpress.txt`
 
-git clone https://github.com/WordPress/WordPress.git /root/wordpress.git
+# only used the specified php version, if specified at all
+if [ ! -z "$php" ]; then
+    php_versions=($php)
+    echo "php version defined as $php"
+fi
+
+# only use the specified wordpress version, if specified at all
+if [ ! -z "$wordpress" ]; then
+    wp_versions=($wordpress)
+    echo "wordpress version defined as $wordpress"
+fi
+
+cd /root/wordpress.git
+git fetch origin
+git rebase
 
 for php_version in "${php_versions[@]}"
 do

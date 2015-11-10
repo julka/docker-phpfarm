@@ -38,6 +38,7 @@ RUN apt-get update && \
 
 # clone phpfarm
 RUN git clone https://github.com/cweiske/phpfarm.git /root/phpfarm
+RUN git clone https://github.com/WordPress/WordPress.git /root/wordpress.git
 
 # add customized configuration
 COPY phpfarm /root/phpfarm/src/
@@ -47,7 +48,6 @@ COPY apache  /etc/apache2/
 # compile, set up mysql & wp, clean up, enable/disable apache stuff
 RUN /root/phpfarm/src/php.sh && \
     /root/phpfarm/src/mysql.sh && \
-    /root/phpfarm/src/wordpress.sh && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     a2dissite 000-default && \
