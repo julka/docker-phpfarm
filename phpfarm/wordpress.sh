@@ -105,14 +105,14 @@ done
 if [ ! -z "$php" ]; then
     if [ ! -z "$wordpress" ]; then
         # sym link to the wordpress instance for this version of php
-        ln -s /root/www/php-$php/WordPress-$wordpress /root/www/test_here
+        ln -s /root/www/php-$php/WordPress-$wordpress /root/www/start_here
     else
         # sym link to the php version
-        ln -s /root/www/php-$php /root/www/test_here
+        ln -s /root/www/php-$php /root/www/start_here
     fi
 
     file="/root/php_versions.conf"
-    echo "<Directory /root/www/test_here/>" >> $file
+    echo "<Directory /root/www/start_here/>" >> $file
     echo "    FCGIWrapper /root/phpfarm/inst/php-$php/bin/php-cgi .php" >> $file
     echo "</Directory>" >> $file
     echo "" >> $file
