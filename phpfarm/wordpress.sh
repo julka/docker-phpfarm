@@ -46,6 +46,7 @@ fi
 cd /root/wordpress.git
 git fetch origin
 git rebase
+chmod -R ugo+rwx /root/wordpress_plugins/
 
 for php_version in "${php_versions[@]}"
 do
