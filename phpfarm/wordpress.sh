@@ -73,7 +73,8 @@ do
         fi
 
         rm -Rf wp-content/plugins/
-        ln -s /root/wordpress_plugins wp-content/plugins
+        #ln -s /root/wordpress_plugins wp-content/plugins
+        cp -rf /root/wordpress_plugins wp-content/plugins
 
         cp wp-config-sample.php wp-config.php
 
@@ -101,6 +102,8 @@ do
         perl -pi -e 's/^(\s*define\(\s*.DB_PASSWORD)/#$1/g' wp-config.php
     done
 done
+
+chmod -R ugo+rwx /root/www/
 
 # set up consistent folder to make it earier to testers to find where to go
 if [ ! -z "$php" ]; then
