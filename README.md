@@ -93,7 +93,8 @@ Default PHP Versions
 * 5.3.29
 * 5.4.44
 * 5.5.29
-* 5.6.14
+* 5.6.16
+* 7.0.0
 
 Default WordPress Versions
 ==================
