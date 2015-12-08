@@ -46,6 +46,7 @@ COPY wordpress_plugins /root/wordpress_plugins
 COPY apache  /etc/apache2/
 
 # compile, set up mysql & wp, clean up, enable/disable apache stuff
+RUN chmod ugo+x /root/phpfarm/src/php.sh
 RUN /root/phpfarm/src/php.sh && \
     /root/phpfarm/src/mysql.sh && \
     apt-get clean && \
