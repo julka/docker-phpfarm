@@ -33,13 +33,13 @@ php_versions=(
 wpDbPassword=`cat /root/mysql.password.wordpress.txt`
 
 # only used the specified php version, if specified at all
-if [ ! -z "$php" ]; then
+if [ ! -z "$php" ] ; then
     php_versions=($php)
     echo "php version defined as $php"
 fi
 
 # only use the specified wordpress version, if specified at all
-if [ ! -z "$wordpress" ]; then
+if [ ! -z "$wordpress" ] ; then
     wp_versions=($wordpress)
     echo "wordpress version defined as $wordpress"
 fi
@@ -68,7 +68,7 @@ do
         cd $wpInstallFolder
         git config core.fileMode false
 
-        if [ "$wp_version" != "master" ]; then
+        if [ "$wp_version" != "master" ] ; then
             git checkout $wp_version -b release/$wp_version
         fi
 
@@ -100,14 +100,76 @@ do
         perl -pi -e 's/^(\s*define\(\s*.DB_NAME)/#$1/g' wp-config.php
         perl -pi -e 's/^(\s*define\(\s*.DB_USER)/#$1/g' wp-config.php
         perl -pi -e 's/^(\s*define\(\s*.DB_PASSWORD)/#$1/g' wp-config.php
+
+        if [ ! -z "$base_url" ] ; then
+            base_url=($base_url)
+            echo "base url defined as $base_url"
+            php_version_check_good=false
+            wp_version_check_good=false
+
+            if [ "$wp_version" = "master" ] ; then
+                php_version_check_good=true
+                wp_version_check_good=true
+            else
+                # requires PHP 5.3.2 and higher
+                if [ "$php_vmajor" -ge "5" ] ; then
+                    if [ "$php_vminor" -ge "3" ] || [ "$php_vmajor" -gt "5" ] ; then
+                        if [ "$php_vpatch" -ge "2" ] || [ "$php_vminor" -gt "3" ] || [ "$php_vmajor" -gt "5" ] ; then
+                            php_version_check_good=true
+                        fi
+                    fi
+                fi
+
+                # requires WordPress version 3.5.2 or higher
+                if [ "$wp_vmajor" -ge "3" ] ; then
+                    if [ "$wp_vminor" -ge "5" ] || [ "$wp_vmajor" -gt "3" ] ; then
+                        if [ "$wp_vpatch" -ge "2" ] || [ "$wp_vminor" -gt "5" ] || [ "$wp_vmajor" -gt "3" ] ; then
+                            wp_version_check_good=true
+                        fi
+                    fi
+                fi
+            fi
+
+            # if the above versions check out, we can install WordPress from the command line
+            if [ "$php_version_check_good" = true ] && [ "$wp_version_check_good" = true ] ; then
+                echo "Installing WordPress"
+                /root/phpfarm/inst/php-$php_version/bin/php /root/wp-cli.phar \
+                    --allow-root \
+                    core install \
+                    --url="$base_url/php-$php_version/WordPress-$wp_version/wp-admin/install.php" \
+                    --title="WordPress $wp_version test environment on PHP $php_version" \
+                    --admin_user="admin" \
+                    --admin_password="password" \
+                    --admin_email="plugins@addthis.com"
+
+                plugins=(
+                    #"addthis"
+                    "http://buildspring/nexus/service/local/artifact/maven/redirect?r=releases&g=com.addthis.wordpress&a=wordpress-sharing-buttons&e=zip&v=LATEST"
+                    "addthis-follow"
+                    "addthis-smart-layers"
+                    "addthis-welcome"
+                )
+
+                for plugin_slug in "${plugins[@]}"
+                do
+                    :
+                    /root/phpfarm/inst/php-$php_version/bin/php /root/wp-cli.phar \
+                        --allow-root \
+                        plugin install $plugin_slug
+                done
+
+            else
+                echo "Version mismatch, can't install WordPress from the command line"
+            fi
+        fi
     done
 done
 
 chmod -R ugo+rwx /root/www/
 
 # set up consistent folder to make it earier to testers to find where to go
-if [ ! -z "$php" ]; then
-    if [ ! -z "$wordpress" ]; then
+if [ ! -z "$php" ] ; then
+    if [ ! -z "$wordpress" ] ; then
         # sym link to the wordpress instance for this version of php
         ln -s /root/www/php-$php/WordPress-$wordpress /root/www/start_here
     else
