@@ -98,11 +98,22 @@ do
         echo "define('DB_PASSWORD', '$wpDbPassword');" >> wp-config-generated.php
         echo "ini_set ('upload_max_filesize', '20M' );" >> wp-config-generated.php
 
-        # set to false for versions 3.0, 3.0.1, 3.0.6, 3.1.4, 3.2.1 because there's lots of depreicated PHP calls
-        if [ "$wp_version" == "3.0" ] || [ "$wp_version" == "3.0.1" ] || [ "$wp_version" == "3.0.6" ] || [ "$wp_version" == "3.1.4" ] || [ "$wp_version" == "3.2.1" ]; then
-            echo "ini_set(\"display_errors\", false);" >> wp-config-generated.php
+        # set to false for versions 3.2 and older because there's lots of depreicated PHP calls
+        wp_version_check_good=false
+        if [ "$wp_version" = "master" ] ; then
+            wp_version_check_good=true
         else
+            if [ "$wp_vmajor" -ge "3" ] ; then
+                if [ "$wp_vminor" -gt "2" ] || [ "$wp_vmajor" -gt "3" ] ; then
+                    wp_version_check_good=true;
+                fi
+            fi
+        fi
+
+        if $wp_version_check_good; then
             echo "ini_set(\"display_errors\", true);" >> wp-config-generated.php
+        else
+            echo "ini_set(\"display_errors\", false);" >> wp-config-generated.php
         fi
 
         perl -pi -e 's/\/\/ \*\* MySQL settings/include\(ABSPATH . "wp-config-generated.php");\n\/\/ ** MySQL settings/' wp-config.php
