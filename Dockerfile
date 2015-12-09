@@ -47,6 +47,8 @@ COPY apache  /etc/apache2/
 
 # compile, set up mysql & wp, clean up, enable/disable apache stuff
 RUN chmod ugo+x /root/phpfarm/src/php.sh
+RUN chmod ugo+x /root/phpfarm/src/wordpress.sh
+RUN chmod ugo+x /root/phpfarm/src/mysql.sh
 RUN /root/phpfarm/src/php.sh && \
     /root/phpfarm/src/mysql.sh && \
     apt-get clean && \
