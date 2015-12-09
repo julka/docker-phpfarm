@@ -75,21 +75,7 @@ In phpfarm/wordpress.sh there is a variable named plugins. It is an array of plu
 
 Loading in WordPress Plugins from your local environment
 ---------------------
-The plugins all get loaded in from the /root/wordpress_plugins/ folder. Each WordPress instance sym links to it. You have three ways to put things into this folder.
-
-1. Before building, you can make a folder called wordpress_plugins as a sibling with the Dockerfile and put your plugins (the unzipped plugin folders) there.
-
-2. copy it in after the container is running
-
-3. mount a folder on our machine into the container when you run it. The below will mount your current working directory in /root/wordpress_plugins/
-
-```bash
-    docker run --rm -t -i \
-    -e APACHE_UID=$UID \
-    -v $PWD:/root/wordpress_plugins:rw \
-    -p 80:80 \
-    hashFromBuildHere
-```
+The plugins all get loaded in from the /root/wordpress_plugins/ folder. Each WordPress instance copies from it. Before building, you can make a folder called wordpress_plugins as a sibling with the Dockerfile and put your plugins (the unzipped plugin folders) there.
 
 Running a Detatched Container
 ==================
