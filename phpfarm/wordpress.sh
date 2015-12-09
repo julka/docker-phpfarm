@@ -96,6 +96,7 @@ do
         echo "define('DB_NAME', '$dbName');" >> wp-config-generated.php
         echo "define('DB_USER', 'wordpress');" >> wp-config-generated.php
         echo "define('DB_PASSWORD', '$wpDbPassword');" >> wp-config-generated.php
+        echo "ini_set ('upload_max_filesize', '20M' );" >> wp-config-generated.php
 
         # set to false for versions 3.0, 3.0.1, 3.0.6, 3.1.4, 3.2.1 because there's lots of depreicated PHP calls
         if [ "$wp_version" == "3.0" ] || [ "$wp_version" == "3.0.1" ] || [ "$wp_version" == "3.0.6" ] || [ "$wp_version" == "3.1.4" ] || [ "$wp_version" == "3.2.1" ]; then
