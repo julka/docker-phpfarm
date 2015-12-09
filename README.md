@@ -54,9 +54,25 @@ Note: For PHP versions, you are restrictied to only using the versions of PHP th
     hashFromBuildHere
 ```
 
-Loading in WordPress Plugins
+Installing WordPress Automatically
+---------------------
+WordPress versions of 3.5.2 and higher on PHP versions 5.3.2 and higher can be installed automatically if you provide the base URL for the docker image.
+
+```bash
+    docker run --rm -t -i \
+    -e APACHE_UID=$UID \
+    -e base_url="http://example.lcl/" \
+    -p 80:80 \
+    hashFromBuildHere
+```
+
+Loading in WordPress Plugins from WordPress.org (and URLs)
 ---------------------
 
+In phpfarm/wordpress.sh there is a variable named plugins. It is an array of plugin slugs (from WordPress.org) and URLs of zips. These plugins will automatically be installed for any WordPress versions of 3.5.2 and higher running on PHP versions 5.3.2 and higher.
+
+Loading in WordPress Plugins from your local environment
+---------------------
 The plugins all get loaded in from the /root/wordpress_plugins/ folder. Each WordPress instance sym links to it. You have three ways to put things into this folder.
 
 1. Before building, you can make a folder called wordpress_plugins as a sibling with the Dockerfile and put your plugins (the unzipped plugin folders) there.
