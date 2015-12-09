@@ -116,3 +116,4 @@ Default WordPress Versions
 * 4.1.8
 * 4.2.5
 * 4.3.1
+* 4.4
