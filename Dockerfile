@@ -45,10 +45,16 @@ COPY phpfarm /root/phpfarm/src/
 COPY wordpress_plugins /root/wordpress_plugins
 COPY apache  /etc/apache2/
 
-# compile, set up mysql & wp, clean up, enable/disable apache stuff
+# permissions on bash scripts
 RUN chmod ugo+x /root/phpfarm/src/php.sh
 RUN chmod ugo+x /root/phpfarm/src/wordpress.sh
 RUN chmod ugo+x /root/phpfarm/src/mysql.sh
+
+#set up WordPress cli
+RUN cd /root && curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+RUN chmod ugo+x /root/wp-cli.phar
+
+# compile, set up mysql & wp, clean up, enable/disable apache stuff
 RUN /root/phpfarm/src/php.sh && \
     /root/phpfarm/src/mysql.sh && \
     apt-get clean && \
