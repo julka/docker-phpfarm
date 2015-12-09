@@ -166,8 +166,9 @@ do
                     --admin_email="plugins@addthis.com"
 
                 plugins=(
-                    #"addthis"
-                    "http://buildspring/nexus/service/local/artifact/maven/redirect?r=releases&g=com.addthis.wordpress&a=wordpress-sharing-buttons&e=zip&v=LATEST"
+                    "addthis"
+                    #"http://buildspring/nexus/service/local/artifact/maven/redirect?r=releases&g=com.addthis.wordpress&a=wordpress-sharing-buttons&e=zip&v=LATEST"
+                    #"https://github.com/wp-plugins/addthis/archive/master.zip"
                     "addthis-follow"
                     "addthis-smart-layers"
                     "addthis-welcome"
@@ -180,7 +181,6 @@ do
                         --allow-root \
                         plugin install $plugin_slug
                 done
-
             else
                 echo "Version mismatch, can't install WordPress from the command line"
             fi
