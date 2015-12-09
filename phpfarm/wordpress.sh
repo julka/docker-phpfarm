@@ -44,6 +44,16 @@ if [ ! -z "$wordpress" ] ; then
     echo "wordpress version defined as $wordpress"
 fi
 
+php_vmajor=`echo ${php_version%%.*}`
+php_vminor=`echo ${php_version%.*}`
+php_vminor=`echo ${php_vminor#*.}`
+php_vpatch=`echo ${php_version##*.}`
+
+wp_vmajor=`echo ${wp_version%%.*}`
+wp_vminor=`echo ${wp_version%.*}`
+wp_vminor=`echo ${wp_vminor#*.}`
+wp_vpatch=`echo ${wp_version##*.}`
+
 cd /root/wordpress.git
 git fetch origin
 git rebase
