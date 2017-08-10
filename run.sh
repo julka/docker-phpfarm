@@ -7,6 +7,7 @@ if [ ! -z "$APACHE_UID" ]; then
     chown -R wwwrun /var/lib/apache2
 fi
 
+chown -R mysql:mysql /var/lib/mysql
 service mysql start
 /root/phpfarm/src/wordpress.sh
 apache2ctl start
