@@ -55,13 +55,13 @@ RUN cd /root && curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages
 RUN chmod ugo+x /root/wp-cli.phar
 
 # compile, set up mysql & wp, clean up, enable/disable apache stuff
-RUN /root/phpfarm/src/php.sh && \
-    /root/phpfarm/src/mysql.sh && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    a2dissite 000-default && \
-    a2ensite super-php && \
-    a2enmod rewrite
+RUN /root/phpfarm/src/php.sh
+RUN apt-get clean
+RUN rm -rf /var/lib/apt/lists/*
+RUN a2dissite 000-default
+RUN a2ensite super-php
+RUN a2enmod rewrite
+RUN /root/phpfarm/src/mysql.sh
 
 # set path
 ENV PATH /root/phpfarm/inst/bin/:/usr/sbin:/usr/bin:/sbin:/bin
