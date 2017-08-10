@@ -19,3 +19,4 @@ mysql="
 ";
 
 mysql -u root -e "$mysql"
+service mysql stop
